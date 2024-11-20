@@ -1,1 +1,3 @@
-// Reexport your entry components here
+import SpaceStatus from "./SpaceStatus.svelte";
+
+export { SpaceStatus };
