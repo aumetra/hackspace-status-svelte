@@ -1,3 +1,3 @@
-import SpaceStatus from "./SpaceStatus.svelte";
+import SpaceStatus from './SpaceStatus.svelte';
 
 export { SpaceStatus };

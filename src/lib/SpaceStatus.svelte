@@ -1,16 +1,17 @@
 <script lang="ts">
 	import spaceApiSchema from './spaceApiSchema';
+	import { onMount } from 'svelte';
 
 	const {
 		apiUrl,
-		interval = 2000,
+		interval = 60_000,
 		...otherProps
 	} = $props<{ apiUrl: string; interval?: number } | HTMLImageElement>();
 
 	let imageSrc = $state('');
 	let alt = $state('unknown');
 
-	setInterval(async () => {
+	async function refreshState() {
 		try {
 			const apiResponse = await fetch(apiUrl);
 			if (!apiResponse.ok) {
@@ -31,7 +32,14 @@
 			console.error(error);
 			alt = 'Unknown';
 		}
-	}, interval);
+	}
+
+	onMount(() => {
+		refreshState();
+
+		let handle = setInterval(refreshState, interval);
+		return () => clearInterval(handle);
+	});
 </script>
 
 <img src={imageSrc} alt={'Space status: ' + alt} {...otherProps} />
